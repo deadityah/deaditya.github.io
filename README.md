@@ -1,1 +1,1 @@
-# deadityah.github.io
+# deaditya.github.io
