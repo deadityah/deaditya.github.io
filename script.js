@@ -937,17 +937,70 @@ function initProjectsSection() {
     });
   });
 
-  // 4. Expanded Detail Modal View Logic
+  // 4. Expanded Detail Modal View Logic & Scroll Lock
   let activeProject = null;
   let currentImageIdx = 0;
+  let savedScrollY = 0;
+  let isScrollLocked = false;
+  let isClosing = false;
+  const originalWindowScrollTo = window.scrollTo.bind(window);
+  const originalWindowScrollBy = window.scrollBy.bind(window);
+
+  function lockBodyScroll() {
+    if (isScrollLocked) return;
+    isScrollLocked = true;
+    savedScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    // Compensate for scrollbar removal to prevent layout shift
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      const header = document.getElementById("siteHeader");
+      if (header) header.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    document.documentElement.classList.add("modal-open");
+    document.body.classList.add("modal-open");
+
+    // Intercept any programmatic scroll attempts while locked
+    window.scrollTo = function(...args) {
+      if (isScrollLocked) return;
+      originalWindowScrollTo(...args);
+    };
+    window.scrollBy = function(...args) {
+      if (isScrollLocked) return;
+      originalWindowScrollBy(...args);
+    };
+  }
+
+  function unlockBodyScroll() {
+    if (!isScrollLocked) return;
+    isScrollLocked = false;
+
+    window.scrollTo = originalWindowScrollTo;
+    window.scrollBy = originalWindowScrollBy;
+
+    document.documentElement.classList.remove("modal-open");
+    document.body.classList.remove("modal-open");
+    document.body.style.paddingRight = "";
+    const header = document.getElementById("siteHeader");
+    if (header) header.style.paddingRight = "";
+
+    // Restore exact scroll position cleanly without jumping to top
+    originalWindowScrollTo(0, savedScrollY);
+  }
 
   function openProjectDetail(projectId) {
     activeProject = projectsData.find(p => p.id === projectId);
     if (!activeProject) return;
 
     isExpanded = true;
+    isClosing = false;
     tickerTween.pause();
     currentImageIdx = 0;
+
+    // Lock page scrolling in the background
+    lockBodyScroll();
 
     // Fill Right Pane (Project Info)
     document.getElementById("expandedTitle").textContent = activeProject.title;
@@ -959,6 +1012,10 @@ function initProjectsSection() {
 
     // Setup Left Pane (Images & Dot Navigation)
     renderCarousel(activeProject);
+
+    // Reset right pane scroll to top when opening a new project
+    const rightPane = document.querySelector(".expanded-right-pane");
+    if (rightPane) rightPane.scrollTop = 0;
 
     // GSAP Transition: Fade out ticker row & reveal expanded modal
     gsap.to(tickerContainer, {
@@ -1053,7 +1110,12 @@ function initProjectsSection() {
 
   // Close / Collapse Modal
   function closeProjectDetail() {
-    if (!isExpanded) return;
+    if (!isExpanded || isClosing) return;
+    isClosing = true;
+    isExpanded = false;
+
+    // Restore normal page scrolling immediately exactly where user left off
+    unlockBodyScroll();
 
     gsap.to(expandedOverlay, {
       autoAlpha: 0,
@@ -1061,7 +1123,7 @@ function initProjectsSection() {
       ease: "power2.inOut",
       onComplete: () => {
         gsap.set(expandedOverlay, { pointerEvents: "none" });
-        isExpanded = false;
+        isClosing = false;
         activeProject = null;
 
         // Restore ticker row & resume auto-scroll
@@ -1079,7 +1141,47 @@ function initProjectsSection() {
   btnClose?.addEventListener("click", closeProjectDetail);
   expandedBackdrop?.addEventListener("click", closeProjectDetail);
 
-  // Keyboard navigation support (Escape to close, arrows for slides)
+  // Touch & wheel scroll lock handling (mobile & desktop)
+  let touchStartY = 0;
+  expandedOverlay.addEventListener("touchstart", (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  expandedOverlay.addEventListener("touchmove", (e) => {
+    if (!isExpanded) return;
+    const scrollable = e.target.closest(".expanded-right-pane");
+    if (!scrollable) {
+      e.preventDefault();
+      return;
+    }
+    // Prevent mobile rubber-band scroll leakage when at boundaries
+    const touchY = e.touches[0].clientY;
+    const deltaY = touchStartY - touchY;
+    const isAtTop = scrollable.scrollTop <= 0 && deltaY < 0;
+    const isAtBottom = (scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 1) && deltaY > 0;
+    if (isAtTop || isAtBottom) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  expandedOverlay.addEventListener("wheel", (e) => {
+    if (!isExpanded) return;
+    const scrollable = e.target.closest(".expanded-right-pane");
+    if (!scrollable) {
+      e.preventDefault();
+      return;
+    }
+    // Prevent wheel leakage at top/bottom of scrollable right pane
+    const isAtTop = scrollable.scrollTop <= 0 && e.deltaY < 0;
+    const isAtBottom = (scrollable.scrollTop + scrollable.clientHeight >= scrollable.scrollHeight - 1) && e.deltaY > 0;
+    if (isAtTop || isAtBottom) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Keyboard navigation support (Escape to close, arrows for slides, block page scroll keys)
   window.addEventListener("keydown", (e) => {
     if (!isExpanded) return;
     if (e.key === "Escape") {
@@ -1088,8 +1190,22 @@ function initProjectsSection() {
       switchImage(currentImageIdx + 1);
     } else if (e.key === "ArrowLeft") {
       switchImage(currentImageIdx - 1);
+    } else if (["Space", "PageUp", "PageDown", "Home", "End"].includes(e.code) || e.key === " " || e.key === "PageUp" || e.key === "PageDown") {
+      const isInsideScroll = document.activeElement && document.activeElement.closest(".expanded-right-pane");
+      if (!isInsideScroll) {
+        e.preventDefault();
+      }
     }
   });
+
+  // Safeguard: Lock window scroll position against any programmatic or browser shift while modal is open
+  window.addEventListener("scroll", () => {
+    if (isScrollLocked && typeof savedScrollY === "number") {
+      if (window.scrollY !== savedScrollY) {
+        window.scrollTo(0, savedScrollY);
+      }
+    }
+  }, { passive: false });
 
   // Smooth Back-to-Top Navigation
   const btnBackToTop = document.getElementById("btnBackToTop");

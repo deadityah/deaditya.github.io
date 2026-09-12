@@ -368,7 +368,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  z-index: 5;
 }
 
 /* Background Layers for Smooth Scroll-Driven Scene Crossfade */
@@ -1218,10 +1218,10 @@ html, body {
   height: 40px;
   overflow: hidden;
   position: relative;
-  z-index: 3;
+  z-index: 2; /* Strictly BELOW section content and project cards, above fixed background */
   pointer-events: none;
-  margin-top: -20px;
-  margin-bottom: -20px;
+  margin: 0; /* Zero negative margins to prevent cutting into section content */
+  line-height: 0;
 }
 
 .angled-section-divider svg {
@@ -1245,7 +1245,7 @@ html, body {
   border: none;
   box-sizing: border-box;
   overflow: hidden;
-  z-index: 2;
+  z-index: 5;
 }
 
 .statement-bg-layer {
@@ -1324,7 +1324,7 @@ html, body {
   overflow: hidden;
   background-color: transparent;
   border: none;
-  z-index: 2;
+  z-index: 5;
 }
 
 .process-bg-layer {
@@ -1480,10 +1480,10 @@ html, body {
   width: 100%;
   min-height: 100vh;
   background-color: transparent;
-  padding: 6rem 0 8rem;
+  padding: 7.5rem 0 10.5rem;
   overflow: hidden;
   border: none;
-  z-index: 2;
+  z-index: 10;
 }
 
 .projects-bg-layer {
@@ -1494,6 +1494,8 @@ html, body {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 6vw 3.5rem;
+  position: relative;
+  z-index: 10;
 }
 
 .projects-header-inner {
@@ -1534,7 +1536,10 @@ html, body {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 2.25rem 0 3.25rem;
+  padding: 2.5rem 0 3.5rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  z-index: 10;
   /* Frosted blur backdrop behind moving project cards */
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -1567,6 +1572,7 @@ html, body {
   justify-content: space-between;
   cursor: pointer;
   position: relative;
+  z-index: 15;
   overflow: hidden;
   user-select: none;
   /* Isolate backdrop-filter into pseudo-element to prevent Chromium downsampling blur on images */
@@ -1591,6 +1597,7 @@ html, body {
   transform: translateY(-8px) translateZ(0);
   border-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.06);
+  z-index: 20;
   /* Glowing edge effect in soft white */
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 22px rgba(255, 255, 255, 0.4), inset 0 0 16px rgba(255, 255, 255, 0.12);
 }
@@ -1693,6 +1700,14 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Scroll-lock state when project modal is open */
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  scroll-behavior: auto !important;
+}
+
 /* ==========================================================================
    Expanded Card View / Split Modal (60-65% Left / 35-40% Right)
    ========================================================================== */
@@ -1706,6 +1721,8 @@ html, body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
 
 .expanded-modal-backdrop {
@@ -1729,6 +1746,7 @@ html, body {
   background: rgba(26, 26, 26, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 45px rgba(16, 185, 129, 0.1);
+  overscroll-behavior: contain;
 }
 
 /* Left & Center-Left Pane: ~62% width */
@@ -1859,6 +1877,9 @@ html, body {
   padding: 2.25rem;
   background: #1a1a1a;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 .expanded-top-bar {
@@ -2031,7 +2052,7 @@ html {
   overflow: hidden;
   display: flex;
   justify-content: center;
-  z-index: 2;
+  z-index: 5;
 }
 
 .footer-bg-layer {
@@ -2040,7 +2061,7 @@ html {
 
 .footer-container {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
