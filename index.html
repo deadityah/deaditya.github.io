@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aditya Sharma | Full-Stack &amp; AI Integration</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts: Space Grotesk & Manrope -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Fixed Scroll-Scrubbed Canvas Background & Vignette Tint -->
+  <canvas id="bgSequenceCanvas" class="bg-sequence-canvas"></canvas>
+  <div class="bg-sequence-overlay" aria-hidden="true"></div>
+  <div class="film-grain-overlay" aria-hidden="true"></div>
+
+  <!-- Top Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
+
+  <!-- Custom Trailing Cursor & Ambient Glow -->
+  <div class="ambient-cursor-glow" id="ambientCursorGlow" aria-hidden="true"></div>
+  <div class="custom-cursor" id="customCursor" aria-hidden="true"></div>
+  <div class="custom-cursor-dot" id="customCursorDot" aria-hidden="true"></div>
+
+  <!-- Sticky Navigation Header -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="#hero-pinned" class="nav-brand magnetic-btn" id="navBrand">ADITYA SHARMA</a>
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="#stageAbout" class="nav-link magnetic-btn" data-target="about">About</a>
+        <a href="#stageSkills" class="nav-link magnetic-btn" data-target="capabilities">Core Capabilities</a>
+        <a href="#howItWorks" class="nav-link magnetic-btn" data-target="process">How I Work</a>
+        <a href="#projects-section" class="nav-link magnetic-btn" data-target="projects">Projects</a>
+        <a href="#contact" class="nav-link magnetic-btn" data-target="contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Fixed Section Dot Navigation (Right Screen Edge) -->
+  <nav class="section-dot-nav" id="sectionDotNav" aria-label="Quick Section Navigation">
+    <div class="dot-nav-track">
+      <a href="#hero-pinned" class="dot-nav-item active" data-section="hero" aria-label="Navigate to Home">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">Home</span>
+      </a>
+      <a href="#stageAbout" class="dot-nav-item" data-section="about" aria-label="Navigate to About">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">About</span>
+      </a>
+      <a href="#stageSkills" class="dot-nav-item" data-section="skills" aria-label="Navigate to Capabilities">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">Capabilities</span>
+      </a>
+      <a href="#giant-statement" class="dot-nav-item" data-section="philosophy" aria-label="Navigate to Philosophy">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">Philosophy</span>
+      </a>
+      <a href="#howItWorks" class="dot-nav-item" data-section="process" aria-label="Navigate to How I Work">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">Process</span>
+      </a>
+      <a href="#projects-section" class="dot-nav-item" data-section="projects" aria-label="Navigate to Projects">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">Projects</span>
+      </a>
+      <a href="#contact" class="dot-nav-item" data-section="contact" aria-label="Navigate to Contact">
+        <span class="dot-nav-indicator"></span>
+        <span class="dot-nav-tooltip">Contact</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Pinned Scroll Section (Stages 1 to 5) -->
+  <section id="hero-pinned" class="hero-pinned-section">
+
+
+    <!-- Live Typing Hero Terminal Badge -->
+    <div class="hero-terminal-badge" id="heroTerminalBadge" aria-label="Terminal status">
+      <span class="term-prompt">&gt;</span>
+      <span class="term-text" id="heroTerminalText"></span>
+      <span class="term-cursor">_</span>
+    </div>
+
+    <!-- Floating UI Mockup Card 1 (Telemetry) -->
+    <div class="floating-ui-card float-card-1" aria-hidden="true">
+      <div class="float-card-header">
+        <span class="float-dot-pulse"></span>
+        <span class="float-card-title">SYSTEM STATUS</span>
+      </div>
+      <div class="float-card-metric">99.98%</div>
+      <div class="float-card-desc">Automation Uptime • Live</div>
+    </div>
+
+    <!-- Layer 2: Large Hollow Outline "PORTFOLIO" Text -->
+    <div class="layer-outline-text" id="outlineTextLayer">
+      <h1 class="outline-title">PORTFOLIO</h1>
+    </div>
+
+    <!-- Layer 3: Transparent Portrait Cutout (Topmost) -->
+    <div class="layer-portrait" id="portraitLayer">
+      <img src="Images/self.png" alt="Portrait" class="portrait-img" id="portraitImg" loading="eager" fetchpriority="high" decoding="sync" onerror="this.onerror=null; this.src='self.png';">
+    </div>
+
+    <!-- Pinned Content Containers (Stages 2, 3, 4) -->
+    <div class="pinned-content-stage" id="pinnedStageContent">
+      <!-- Stage 2: Intro (Name & Transforming Words Tagline) -->
+      <div class="stage-intro" id="stageIntro">
+        <h1 class="intro-name">Aditya Sharma</h1>
+        <h2 class="intro-title">Full Stack Web Developer &amp; AI Integration Expert</h2>
+        <div class="intro-dynamic-text">
+          <span>I build</span>
+          <span class="rotating-word-container" id="rotatingWordWrap">
+            <span class="rotating-word active">modern web apps</span>
+            <span class="rotating-word">AI pipelines</span>
+            <span class="rotating-word">custom SaaS</span>
+            <span class="rotating-word">growth systems</span>
+          </span>
+          <span class="intro-dynamic-suffix">that scale businesses.</span>
+        </div>
+      </div>
+
+      <!-- Stage 3: About Me -->
+      <div class="stage-about" id="stageAbout">
+        <span class="about-label">ABOUT ME</span>
+        <p class="about-text">
+          I'm a full-stack web developer and AI integration expert focused on helping Indian small and medium businesses scale their operations through custom web solutions and intelligent automation.
+        </p>
+        <p class="about-text">
+          With expertise in modern web technologies and AI integration, I design and build systems that solve real business problems—from lead generation and sales automation to business process optimization and digital transformation.
+        </p>
+        <p class="about-text highlight-text">
+          Currently building my AI automation consultancy.
+        </p>
+      </div>
+
+      <!-- Stage 4: Balanced Core Capabilities (Two-Column Layout) -->
+      <div class="stage-skills" id="stageSkills">
+        <div class="capabilities-split-layout">
+          <!-- Left Column: The 7 Categories with 1-Line Descriptions -->
+          <div class="capabilities-left-col">
+            <span class="skills-label">EXPERTISE &amp; SERVICES</span>
+            <h2 class="skills-heading">Core Capabilities</h2>
+            
+            <div class="capabilities-categories-list">
+              <div class="category-item">
+                <h3 class="category-title">Web Development</h3>
+                <p class="category-desc">Custom full-stack web applications, high-performance responsive interfaces, and scalable architectures.</p>
+              </div>
+
+              <div class="category-item">
+                <h3 class="category-title">Design &amp; UX</h3>
+                <p class="category-desc">Modern, clean user interfaces crafted for effortless navigation and conversion-focused customer journeys.</p>
+              </div>
+
+              <div class="category-item">
+                <h3 class="category-title">AI &amp; Automation</h3>
+                <p class="category-desc">Connecting LLMs, webhooks, and APIs into automated business pipelines to streamline operations.</p>
+              </div>
+
+              <div class="category-item">
+                <h3 class="category-title">E-Commerce &amp; SaaS</h3>
+                <p class="category-desc">Headless storefronts with fast checkout flows and multi-tenant subscription cloud architectures.</p>
+              </div>
+
+              <div class="category-item">
+                <h3 class="category-title">Technical Infrastructure</h3>
+                <p class="category-desc">Cloud environments, relational database architecture, containerized microservices, and secure networking.</p>
+              </div>
+
+              <div class="category-item">
+                <h3 class="category-title">Optimization &amp; Analytics</h3>
+                <p class="category-desc">Core Web Vitals acceleration, database latency reduction, and real-time business telemetry dashboards.</p>
+              </div>
+
+              <div class="category-item">
+                <h3 class="category-title">Strategy &amp; Consulting</h3>
+                <p class="category-desc">Digital transformation blueprints, technical stack audits, and operational workflow engineering.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Stats Strip + Dynamic Tech Stack Wall -->
+          <div class="capabilities-right-col">
+            <!-- Stats Strip (Scroll-Triggered Count-Up) -->
+            <div class="capabilities-stats-strip">
+              <div class="stat-card">
+                <span class="stat-number" data-count="24">0</span>
+                <span class="stat-label">Capabilities</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number" data-count="7">0</span>
+                <span class="stat-label">Domains</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-number" data-count="9">0</span>
+                <span class="stat-label">Self-Built Systems</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Floating Tech Stack Wall (Portrait Constellation) -->
+            <div class="capabilities-tools-card tech-wall-card">
+              <div class="tools-card-header">
+                <span class="tools-card-title">TECH STACK WALL</span>
+                <span class="tools-card-status">LIVE ARSENAL</span>
+              </div>
+
+              <!-- Portrait Constellation Stage with Dynamic Network Graph -->
+              <div class="tech-constellation-stage" id="techConstellation">
+                <svg class="tech-network-svg" id="techNetworkSvg" aria-hidden="true"></svg>
+
+                <!-- 7 Scattered Tech Nodes -->
+                <div class="tech-node-item" id="node-nodejs" data-tool="nodejs">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2.5L3.5 9.7V24.3L16 31.5L28.5 24.3V9.7L16 2.5Z" stroke="#10b981" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M16 11.5V20.5M16 20.5L21.5 17.5M16 20.5L10.5 17.5" stroke="#f3f4f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="tool-name">Node.js</span>
+                </div>
+
+                <div class="tech-node-item" id="node-supabase" data-tool="supabase">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <path d="M17.5 3L6 17.5H16L14.5 29L26 14.5H16L17.5 3Z" fill="url(#supaGrad)" stroke="#10b981" stroke-width="1.5" stroke-linejoin="round"/>
+                    <defs>
+                      <linearGradient id="supaGrad" x1="6" y1="3" x2="26" y2="29" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#34d399"/>
+                        <stop offset="1" stop-color="#059669"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <span class="tool-name">Supabase</span>
+                </div>
+
+                <div class="tech-node-item" id="node-express" data-tool="express">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <rect x="3" y="3" width="26" height="26" rx="7" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
+                    <path d="M9 11L14 21M14 11L9 21M17 11H23M17 16H21.5M17 21H23" stroke="#f3f4f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="tool-name">Express</span>
+                </div>
+
+                <div class="tech-node-item" id="node-mysql" data-tool="mysql">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <path d="M6 21C6 13.5 11 7.5 18 7.5C22 7.5 25 9.5 26 11.5C24 12.5 21 12.5 19 13.5C17 14.5 16 16.5 16 18.5C16 21.5 18 22.5 21 22.5C23 22.5 25 21.5 26 20.5C26 23.5 23 25.5 19 25.5C11 25.5 6 21 6 21Z" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="21.5" cy="10.5" r="1.5" fill="#f59e0b"/>
+                  </svg>
+                  <span class="tool-name">MySQL</span>
+                </div>
+
+                <div class="tech-node-item" id="node-n8n" data-tool="n8n">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <circle cx="9" cy="16" r="3.5" stroke="#f43f5e" stroke-width="2.2"/>
+                    <circle cx="23" cy="10" r="3.5" stroke="#fb7185" stroke-width="2.2"/>
+                    <circle cx="23" cy="22" r="3.5" stroke="#fda4af" stroke-width="2.2"/>
+                    <path d="M12.5 14.5L19.5 11M12.5 17.5L19.5 21" stroke="#f3f4f6" stroke-width="2.2" stroke-linecap="round"/>
+                  </svg>
+                  <span class="tool-name">n8n</span>
+                </div>
+
+                <div class="tech-node-item" id="node-tailscale" data-tool="tailscale">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <circle cx="10" cy="10" r="2.8" fill="#f3f4f6"/>
+                    <circle cx="16" cy="10" r="2.8" fill="#10b981"/>
+                    <circle cx="22" cy="10" r="2.8" fill="rgba(255,255,255,0.3)"/>
+                    <circle cx="10" cy="16" r="2.8" fill="rgba(255,255,255,0.3)"/>
+                    <circle cx="16" cy="16" r="2.8" fill="#f3f4f6"/>
+                    <circle cx="22" cy="16" r="2.8" fill="#10b981"/>
+                    <circle cx="10" cy="22" r="2.8" fill="#10b981"/>
+                    <circle cx="16" cy="22" r="2.8" fill="rgba(255,255,255,0.3)"/>
+                    <circle cx="22" cy="22" r="2.8" fill="#f3f4f6"/>
+                  </svg>
+                  <span class="tool-name">Tailscale</span>
+                </div>
+
+                <div class="tech-node-item" id="node-htmx" data-tool="htmx">
+                  <svg class="tech-icon-svg" viewBox="0 0 32 32" fill="none">
+                    <path d="M10 11L5 16L10 21M22 11L27 16L22 21M18 9L14 23" stroke="#38bdf8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class="tool-name">HTMX</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Angled Section Divider 1 (Hero -> Statement) -->
+  <div class="angled-section-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+      <path d="M0,0 L1440,32 L1440,40 L0,40 Z" fill="rgba(18, 20, 24, 0.35)"></path>
+      <line x1="0" y1="0" x2="1440" y2="32" stroke="url(#angleGrad1)" stroke-width="1.8"></line>
+      <defs>
+        <linearGradient id="angleGrad1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(16, 185, 129, 0.1)"/>
+          <stop offset="50%" stop-color="rgba(16, 185, 129, 0.65)"/>
+          <stop offset="100%" stop-color="rgba(56, 189, 248, 0.15)"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- Midway Giant Statement Section -->
+  <section id="giant-statement" class="statement-section">
+    <div class="statement-dark-overlay" aria-hidden="true"></div>
+    <div class="statement-content-wrap">
+      <span class="statement-eyebrow">CORE PHILOSOPHY</span>
+      <h2 class="statement-quote" id="statementQuote">
+        I don't just build websites — <span class="statement-highlight">I build systems that work while you don't.</span>
+      </h2>
+      <div class="statement-accent-line"></div>
+    </div>
+  </section>
+
+  <!-- "How I Work" Section -->
+  <section id="howItWorks" class="process-section">
+    
+    <!-- Floating UI Card 3 (Code Execution snippet) -->
+    <div class="floating-ui-card float-card-3" aria-hidden="true">
+      <div class="float-code-bar">
+        <span class="float-code-dot red"></span>
+        <span class="float-code-dot yellow"></span>
+        <span class="float-code-dot green"></span>
+        <span class="float-code-filename">pipeline.ts</span>
+      </div>
+      <code class="float-code-body">
+        <span class="token-kw">await</span> <span class="token-fn">automate</span>({ scale: <span class="token-num">10</span> });
+      </code>
+    </div>
+
+    <div class="process-container">
+      <div class="process-header">
+        <span class="process-eyebrow">PROCESS &amp; METHODOLOGY</span>
+        <h2 class="process-heading">How I Work</h2>
+        <p class="process-subheading">A structured engineering process designed for business velocity, predictable delivery, and enterprise scalability.</p>
+      </div>
+
+      <div class="process-timeline-grid">
+        <!-- Step 1: Discovery -->
+        <div class="process-step-card">
+          <div class="step-badge-row">
+            <span class="step-number">01</span>
+            <span class="step-status">PHASE 1</span>
+          </div>
+          <h3 class="step-title">Discovery</h3>
+          <p class="step-desc">Deep audit of your operational bottlenecks, customer touchpoints, and technical architecture to define high-ROI goals.</p>
+          <div class="step-accent-bar"></div>
+        </div>
+
+        <!-- Step 2: Build -->
+        <div class="process-step-card">
+          <div class="step-badge-row">
+            <span class="step-number">02</span>
+            <span class="step-status">PHASE 2</span>
+          </div>
+          <h3 class="step-title">Build</h3>
+          <p class="step-desc">Engineering resilient full-stack applications with conversion-focused interfaces, clean code, and sub-second load speeds.</p>
+          <div class="step-accent-bar"></div>
+        </div>
+
+        <!-- Step 3: Automate -->
+        <div class="process-step-card">
+          <div class="step-badge-row">
+            <span class="step-number">03</span>
+            <span class="step-status">PHASE 3</span>
+          </div>
+          <h3 class="step-title">Automate</h3>
+          <p class="step-desc">Connecting webhooks, CRM pipelines, and intelligent AI models to replace repetitive manual overhead with 24/7 background workflows.</p>
+          <div class="step-accent-bar"></div>
+        </div>
+
+        <!-- Step 4: Support -->
+        <div class="process-step-card">
+          <div class="step-badge-row">
+            <span class="step-number">04</span>
+            <span class="step-status">PHASE 4</span>
+          </div>
+          <h3 class="step-title">Support</h3>
+          <p class="step-desc">Continuous telemetry monitoring, proactive infrastructure scaling, and ongoing feature sprints under a dedicated retainer partnership.</p>
+          <div class="step-accent-bar"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Angled Section Divider 2 (Process -> Projects) -->
+  <div class="angled-section-divider reverse" aria-hidden="true">
+    <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+      <path d="M0,32 L1440,0 L1440,40 L0,40 Z" fill="rgba(18, 20, 24, 0.35)"></path>
+      <line x1="0" y1="32" x2="1440" y2="0" stroke="url(#angleGrad2)" stroke-width="1.8"></line>
+      <defs>
+        <linearGradient id="angleGrad2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(56, 189, 248, 0.15)"/>
+          <stop offset="50%" stop-color="rgba(16, 185, 129, 0.65)"/>
+          <stop offset="100%" stop-color="rgba(16, 185, 129, 0.1)"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- Section 2: Projects Showcase -->
+  <section id="projects-section" class="projects-section">
+    <!-- Section Header -->
+    <div class="projects-header-wrapper" id="projectsHeader">
+      <div class="projects-header-inner">
+        <span class="projects-eyebrow">SELECTED WORKS</span>
+        <h2 class="projects-main-heading">Featured Projects & Systems</h2>
+        <p class="projects-subheading">A continuous showcase of full-stack web platforms, automated workflows, and business intelligence suites. Hover any card to pause, click to inspect full architecture.</p>
+      </div>
+    </div>
+
+    <!-- Continuous Auto-Scroll Ticker Wrapper -->
+    <div class="projects-ticker-wrapper" id="projectsTickerContainer">
+      <div class="ticker-track" id="tickerTrack">
+        <!-- Cards dynamically injected & duplicated via script.js for seamless infinite looping -->
+      </div>
+    </div>
+
+    <!-- Card Expanded Detail View (Covers screen on click) -->
+    <div class="project-expanded-overlay" id="projectExpandedView" aria-hidden="true">
+      <div class="expanded-modal-backdrop" id="expandedBackdrop"></div>
+      
+      <div class="expanded-modal-container" id="expandedContainer">
+        <!-- Left & Center-Left Pane: Roughly 62% width -->
+        <div class="expanded-left-pane">
+          <div class="expanded-media-frame">
+            <img id="expandedMainImg" src="" alt="Project Screenshot" class="expanded-main-image" loading="lazy" decoding="async">
+            
+            <!-- Navigation arrows -->
+            <button class="nav-arrow prev-arrow" id="btnPrevImg" aria-label="Previous screenshot">‹</button>
+            <button class="nav-arrow next-arrow" id="btnNextImg" aria-label="Next screenshot">›</button>
+          </div>
+
+          <!-- Circular Dot Indicators -->
+          <div class="carousel-dots-wrapper" id="expandedDotsContainer">
+            <div class="carousel-dots" id="carouselDots">
+              <!-- Dots dynamically injected -->
+            </div>
+            <span class="carousel-counter" id="carouselCounter">1 / 1</span>
+          </div>
+        </div>
+
+        <!-- Right Pane: Roughly 38% width -->
+        <div class="expanded-right-pane">
+          <!-- Close / Back Action -->
+          <div class="expanded-top-bar">
+            <button class="btn-close-expanded" id="btnCloseExpanded" aria-label="Close project view">
+              <span class="close-icon">←</span>
+              <span>Back to Projects</span>
+            </button>
+          </div>
+
+          <div class="expanded-info-scroll">
+            <div class="expanded-badge-row">
+              <span class="project-status-chip">CASE STUDY</span>
+            </div>
+
+            <h3 class="expanded-project-title" id="expandedTitle">Project Title</h3>
+
+            <!-- Capability Demonstrated -->
+            <div class="expanded-capability-box">
+              <span class="capability-tag">CAPABILITY DEMONSTRATED</span>
+              <p class="capability-text" id="expandedCapability">Architecture & Optimization</p>
+            </div>
+
+            <!-- Full Project Description -->
+            <div class="expanded-desc-box">
+              <h4 class="expanded-section-title">Overview & Impact</h4>
+              <p class="expanded-description-text" id="expandedDescription">Full project description text...</p>
+            </div>
+
+            <!-- Tech Stack Used -->
+            <div class="expanded-tech-box">
+              <h4 class="expanded-section-title">Technologies & Infrastructure</h4>
+              <div class="tech-tags-grid" id="expandedTech">
+                <!-- Tech pills injected here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Angled Section Divider 3 (Projects -> Footer) -->
+  <div class="angled-section-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 40" preserveAspectRatio="none">
+      <path d="M0,0 L1440,32 L1440,40 L0,40 Z" fill="rgba(18, 20, 24, 0.35)"></path>
+      <line x1="0" y1="0" x2="1440" y2="32" stroke="url(#angleGrad3)" stroke-width="1.8"></line>
+      <defs>
+        <linearGradient id="angleGrad3" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(16, 185, 129, 0.1)"/>
+          <stop offset="50%" stop-color="rgba(16, 185, 129, 0.65)"/>
+          <stop offset="100%" stop-color="rgba(245, 158, 11, 0.2)"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- Section 3: Minimalist Footer -->
+  <footer id="contact" class="portfolio-footer">
+    <div class="footer-container">
+      <!-- Top Row: Kicker & Heading (Centered) -->
+      <div class="footer-top-row">
+        <div class="footer-header-col">
+          <span class="footer-kicker">CONTACT</span>
+          <h2 class="footer-heading">Let's connect and build something impactful.</h2>
+        </div>
+      </div>
+
+      <!-- Middle Row: Plain Redirection Links & Non-Clickable Email/Phone in a single centered horizontal line -->
+      <div class="footer-links-horizontal-row">
+        <!-- Non-clickable plain text Email -->
+        <div class="contact-info-item">
+          <span class="contact-item-label">Email</span>
+          <span class="contact-item-text">deadityah@gmail.com</span>
+        </div>
+
+        <span class="contact-row-divider">•</span>
+
+        <!-- Non-clickable plain text Phone -->
+        <div class="contact-info-item">
+          <span class="contact-item-label">Phone</span>
+          <span class="contact-item-text">+91 9893254470</span>
+        </div>
+
+        <span class="contact-row-divider">•</span>
+
+        <!-- Clickable External LinkedIn -->
+        <div class="contact-info-item">
+          <a href="https://linkedin.com/in/aditya-sharma-b8466325a/" target="_blank" rel="noopener noreferrer" class="footer-plain-link">
+            LinkedIn ↗
+          </a>
+        </div>
+
+        <span class="contact-row-divider">•</span>
+
+        <!-- Clickable External GitHub -->
+        <div class="contact-info-item">
+          <a href="https://github.com/deadityah" target="_blank" rel="noopener noreferrer" class="footer-plain-link">
+            GitHub ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Centered Back to Top Anchor -->
+      <div class="footer-back-to-top-wrap">
+        <a href="#hero-pinned" class="footer-back-to-top" id="btnBackToTop">
+          <span>Back to top</span>
+          <span class="back-top-arrow">↑</span>
+        </a>
+      </div>
+
+      <!-- Bottom Row: Copyright -->
+      <div class="footer-bottom-row">
+        <p class="footer-copyright">© 2026 Aditya Sharma. All rights reserved.</p>
+        <p class="footer-credit">Handcrafted with Space Grotesk, Manrope & GSAP</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- GSAP & ScrollTrigger CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Main Script -->
+  <script src="script.js"></script>
+</body>
+</html>
