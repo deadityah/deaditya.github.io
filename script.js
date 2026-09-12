@@ -132,6 +132,13 @@ document.addEventListener("DOMContentLoaded", () => {
     duration: 0.6
   }, stage4Start);
 
+  // Hovering System Status 99.98% card exits and fades out with the About Me section
+  heroTl.to(".float-card-1", {
+    autoAlpha: 0,
+    ease: "power2.inOut",
+    duration: 0.6
+  }, stage4Start);
+
   // Fade and rise in balanced Core Capabilities (Two-Column Layout)
   heroTl.fromTo("#stageSkills",
     { autoAlpha: 0, y: 30 },
